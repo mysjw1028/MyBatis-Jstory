@@ -21,5 +21,6 @@ public class Comment {
 
     public void update(CommentRespUpdateDto commentRespUpdateDto) {
         this.commentContent = commentRespUpdateDto.getCommentContent();
-    }
+    }// 걍 메소드 인데 만약에 작동을 안되면 디폴트 생성자나 해당되는것에 생성자를 만들어야하한다.
+
 }
