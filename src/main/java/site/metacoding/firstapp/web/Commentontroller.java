@@ -13,7 +13,7 @@ import site.metacoding.firstapp.web.dto.comment.CommentRespUpdateDto;
 
 @RequiredArgsConstructor
 @Controller
-public class ReplyController {
+public class Commentontroller {
     private final CommentDao commentDao;
 
     @PostMapping("/post/comment/write/{postId}/{userId}")
@@ -28,7 +28,7 @@ public class ReplyController {
         Comment commentPS = commentDao.findById(commentId);
         System.out.println(" 디버그 reply업뎃 : " + commentPS.getCommentContent());
         model.addAttribute("comment", commentPS);
-        return "post/replyupdate";
+        return "post/commentupdate";
     }
 
     @PostMapping("/post/comment/update/{commentId}/{userId}")
