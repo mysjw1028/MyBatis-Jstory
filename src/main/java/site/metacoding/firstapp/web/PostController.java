@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
+import site.metacoding.firstapp.domain.comment.CommentDao;
 import site.metacoding.firstapp.domain.img.ImgDto;
 import site.metacoding.firstapp.domain.love.Love;
 import site.metacoding.firstapp.domain.post.Post;
@@ -21,6 +22,7 @@ import site.metacoding.firstapp.domain.user.User;
 import site.metacoding.firstapp.domain.user.UserDao;
 import site.metacoding.firstapp.service.PostService;
 import site.metacoding.firstapp.web.dto.CMRespDto;
+import site.metacoding.firstapp.web.dto.comment.CommentReadDto;
 import site.metacoding.firstapp.web.dto.post.PostDatailDto;
 import site.metacoding.firstapp.web.dto.post.PostListDto;
 import site.metacoding.firstapp.web.dto.post.PostPagingDto;
@@ -34,19 +36,18 @@ public class PostController {
     private final HttpSession session;
     private final PostDao postDao;
     private final UserDao userDao;
+    private final CommentDao commentDao;
     private final PostService postService;
 
     // 1번째 ?page=0&keyword=스프링 -> 프라이머리키가 아니라서 @PathVariable를 걸음
     @GetMapping("/post/listForm/{userId}")
     public String 내블로그(Model model, Integer page, @PathVariable Integer userId, String keyword) { // 0 -> 0, 1->10,
         // 2->20
-
         if (page == null)
             page = 0;
         int startNum = page * 3; // 1. 수정함 -> 3개씩 보임
 
         if (keyword == null || keyword.isEmpty()) {
-            System.out.println("디버그 : ================");
             List<PostListDto> postList = postDao.findAll(startNum, userId);
 
             PostPagingDto paging = postDao.paging(page, userId, null);// 페이지 호출
@@ -60,7 +61,6 @@ public class PostController {
         } else {
             // null이 아닐경우 //값에 안담김
 
-            System.out.println("디버그 : userId : " + userId);
             List<PostListDto> postList = postDao.findSearch(userId, keyword, startNum);
             PostPagingDto paging = postDao.paging(page, userId, keyword);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
@@ -68,7 +68,6 @@ public class PostController {
             model.addAttribute("postList", postList);
             model.addAttribute("paging", paging);
 
-            System.out.println("디버그  postListkeyword " + postList);
         }
 
         return "post/listForm";
@@ -93,15 +92,19 @@ public class PostController {
     @GetMapping("/post/detailForm/{postId}/{userId}")
     public String 블로그상세보기(@PathVariable Integer postId, @PathVariable Integer userId, Model model) {
         PostDatailDto postDatailDtos = postDao.detailOnly(postId);// 얘를 올려서
+        List<CommentReadDto> commentList = commentDao.commentOnly(userId, postId);
 
+        System.out.println("디버그~~~!" + postDatailDtos.getCategoryTitle());
         model.addAttribute("user", userDao.findById(userId));
 
         model.addAttribute("PostDatailDto", postService.게시글상세보기(postId, userId));
 
-        model.addAttribute("categoryTitle", postDatailDtos);// 모델에 띄우는거
+        model.addAttribute("categoryTitle", postDatailDtos);
         model.addAttribute("post", postDao.findById(postId));
         model.addAttribute("love", postDao.findByDetail(postId, userId));
-        model.addAttribute("postThumnail", postDatailDtos);
+        model.addAttribute("comment", commentList);
+        // model.addAttribute("nickName", commentList);
+
         return "post/detailForm";
     }
 
