@@ -60,7 +60,6 @@ public class PostController {
 
         } else {
             // null이 아닐경우 //값에 안담김
-
             List<PostListDto> postList = postDao.findSearch(userId, keyword, startNum);
             PostPagingDto paging = postDao.paging(page, userId, keyword);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
@@ -94,7 +93,6 @@ public class PostController {
         PostDatailDto postDatailDtos = postDao.detailOnly(postId);// 얘를 올려서
         List<CommentReadDto> commentList = commentDao.commentOnly(userId, postId);
 
-        System.out.println("디버그~~~!" + postDatailDtos.getCategoryTitle());
         model.addAttribute("user", userDao.findById(userId));
 
         model.addAttribute("PostDatailDto", postService.게시글상세보기(postId, userId));

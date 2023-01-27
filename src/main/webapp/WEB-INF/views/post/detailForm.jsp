@@ -7,6 +7,8 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <form action="/update/${postId}/delete" method="post">
             <input id="postId" type="hidden" value="${post.postId}" />
             <input id="userId" type="hidden" value="${post.userId}" />
+            <input id="commentId" type="hidden" value="${commentId.userId}" />
+
             <input id="categoryId" type="hidden" value="${category.categoryId}" />
             <input id="loveId" type="hidden" value="${love.loveId}" name="loveId" />
             <input id="loveuserId" type="hidden" value="${love.userId}" />
@@ -95,109 +97,110 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
                                 &nbsp;&nbsp; ${comment.commentContent}
 
                             </div>
-                            <div style="display: flex;">
-
-                                <c:if test="${comment.nickName == principal.nickName}">
-                                    <a class="btn btn-outline-warning"
-                                        href="/post/comment/update/${comment.commentId}/${comment.postId}/${principal.userId}"
-                                        style="height:38px;width: 58px;">수정</a>&nbsp;&nbsp;
-
-                                    <form action="/post/comment/delete/${comment.commentId}/${comment.userId}"
-                                        method="post">  
-                                        <button id="btndelete" type="submit" onclick="removeCheck()"
-                                            class="btn btn-outline-danger" style="font-size: 15px; margin-right: 15px;">
-                                            댓글 삭제
-                                        </button>
-                                    </form>
-                                </c:if>
-
-                            </div>
-                        </div>
-                        <hr>
-                </c:forEach>
-                <input id="comment" name="commentContent" type="text" placeholder="댓글 작성하는 공간" style="height: 50px;"
-                    class="form-control" />
-                <br>
-
-                <div style="float: right;">
-                    <button type="submit" class="my_active_btn" id="btnReply">
-                        댓글 등록
-                    </button>
-                </div>
             </form>
-        </div>
 
+            <div style="display: flex;">
+
+                <c:if test="${comment.nickName == principal.nickName}">
+                    <a class="btn btn-outline-warning"
+                        href="/post/comment/update/${comment.commentId}/${comment.postId}/${principal.userId}"
+                        style="height:38px;width: 58px;">수정</a>&nbsp;&nbsp;
+
+                    <form action="/post/comment/delete/${comment.commentId}/${principal.userId}" method="post">
+                        <button id="btndelete" type="submit" class="btn btn-outline-danger"
+                            style="font-size: 15px; margin-right: 15px;">
+                            댓글 삭제 commentId : ${comment.commentId}, userId : ${principal.userId}
+                        </button>
+                    </form>
+
+                </c:if>
+
+            </div>
+        </div>
+        <hr>
+        </c:forEach>
+        <input id="comment" name="commentContent" type="text" placeholder="댓글 작성하는 공간" style="height: 50px;"
+            class="form-control" />
+        <br>
+
+        <div style="float: right;">
+            <button type="submit" class="my_active_btn" id="btnReply">
+                댓글 등록
+            </button>
+        </div>
     </div>
 
+</div>
 
 
 
-    <script>
 
-        // 하트 아이콘을 클릭했을때의 로직
-        $(" #iconLove").click(() => {
-            let isLovedState = $("#iconLove").hasClass("fa-solid");
-            if (isLovedState) {
-                deleteLove(isLovedState);
+<script>
+
+    // 하트 아이콘을 클릭했을때의 로직
+    $(" #iconLove").click(() => {
+        let isLovedState = $("#iconLove").hasClass("fa-solid");
+        if (isLovedState) {
+            deleteLove(isLovedState);
+        } else {
+            insertLove(isLovedState);
+        }
+    });
+
+    // DB에 insert 요청하기
+    function insertLove() {
+        let postId = $("#postId").val();
+
+        $.ajax("/post/" + postId + "/loves", {
+            type: "POST",
+            dataType: "json"
+        }).done((res) => {
+            if (res.code == 1) {
+                renderLoves();
+                // 좋아요 수 1 증가
+                let count = $("#countLove").text();
+                $("#countLove").text(Number(count) + 1);
+                $("#loveId").val(res.data.postId);
+                alert("좋아요에 성공했습니다");
             } else {
-                insertLove(isLovedState);
+                alert("좋아요 실패했습니다");
             }
         });
+    }
 
-        // DB에 insert 요청하기
-        function insertLove() {
-            let postId = $("#postId").val();
+    // DB에 delete 요청하기
+    function deleteLove() {//delete는 바디 데이터가 없다
+        let postId = $("#postId").val();
+        let loveId = $("#loveId").val();
 
-            $.ajax("/post/" + postId + "/loves", {
-                type: "POST",
-                dataType: "json"
-            }).done((res) => {
-                if (res.code == 1) {
-                    renderLoves();
-                    // 좋아요 수 1 증가
-                    let count = $("#countLove").text();
-                    $("#countLove").text(Number(count) + 1);
-                    $("#loveId").val(res.data.postId);
-                    alert("좋아요에 성공했습니다");
-                } else {
-                    alert("좋아요 실패했습니다");
-                }
-            });
-        }
+        $.ajax("/post/" + postId + "/loves/" + loveId, {
+            type: "DELETE",
+            dataType: "json"
+        }).done((res) => {//res를 자바스크립트로 바꿔치기한다-> 통신이 끝나면
+            if (res.code == 1) {//빈 하트로 바꾸기- > 바꾸는 그림그리느거야
+                renderCancelLoves();
+                let count = $("#countLove").text();//좋아요 카운트를 가져와서 그 값에 -1 -> 통신이 성공하고 넣어야해서 아해
+                $("#countLove").text(Number(count) - 1);
+                console.log("1");
+                alert("좋아요 취소에 성공했습니다");
+                console.log("2");
+            } else {
+                console.log("3");
+                alert("좋아요 취소에 실패했습니다");
+            }
+        });
+    }
+    // 빨간색 하트 그리기
+    function renderLoves() {
+        $("#iconLove").removeClass("fa-regular");
+        $("#iconLove").addClass("fa-solid");
+    }
 
-        // DB에 delete 요청하기
-        function deleteLove() {//delete는 바디 데이터가 없다
-            let postId = $("#postId").val();
-            let loveId = $("#loveId").val();
+    // 검정색 하트 그리기
+    function renderCancelLoves() {
+        $("#iconLove").removeClass("fa-solid");
+        $("#iconLove").addClass("fa-regular");
+    }
+</script>
 
-            $.ajax("/post/" + postId + "/loves/" + loveId, {
-                type: "DELETE",
-                dataType: "json"
-            }).done((res) => {//res를 자바스크립트로 바꿔치기한다-> 통신이 끝나면
-                if (res.code == 1) {//빈 하트로 바꾸기- > 바꾸는 그림그리느거야
-                    renderCancelLoves();
-                    let count = $("#countLove").text();//좋아요 카운트를 가져와서 그 값에 -1 -> 통신이 성공하고 넣어야해서 아해
-                    $("#countLove").text(Number(count) - 1);
-                    console.log("1");
-                    alert("좋아요 취소에 성공했습니다");
-                    console.log("2");
-                } else {
-                    console.log("3");
-                    alert("좋아요 취소에 실패했습니다");
-                }
-            });
-        }
-        // 빨간색 하트 그리기
-        function renderLoves() {
-            $("#iconLove").removeClass("fa-regular");
-            $("#iconLove").addClass("fa-solid");
-        }
-
-        // 검정색 하트 그리기
-        function renderCancelLoves() {
-            $("#iconLove").removeClass("fa-solid");
-            $("#iconLove").addClass("fa-regular");
-        }
-    </script>
-
-    <%@ include file="../layout/footer.jsp"%>
+<%@ include file="../layout/footer.jsp"%>

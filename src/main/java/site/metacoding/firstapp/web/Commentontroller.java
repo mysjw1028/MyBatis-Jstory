@@ -19,6 +19,7 @@ public class Commentontroller {
     @PostMapping("/post/comment/write/{postId}/{userId}")
     public String replylnsert(Comment comment, @PathVariable Integer postId, @PathVariable Integer userId) {
         commentDao.insert(comment);
+        System.out.println("디버그   : " + comment.getCommentContent());
         return "redirect:/";
     }
 
@@ -41,8 +42,9 @@ public class Commentontroller {
         return "redirect:/";
     }
 
-    @PostMapping("/post/comment/delete/{commentId}/{userId}") // 5번 deleteById -> 삭제하기 -> post로 값 삭제
+    @PostMapping("/post/comment/delete/{commentId}/{userId}")
     public String deletecomment(@PathVariable Integer commentId) {
+        System.out.println("이거 타냐??");
         Comment commentPS = commentDao.findById(commentId);
         commentDao.deleteById(commentId);
         return "redirect:/";
