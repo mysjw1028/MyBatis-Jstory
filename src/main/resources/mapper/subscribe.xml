@@ -3,15 +3,17 @@
 <mapper namespace="site.metacoding.firstapp.domain.subscribe.SubscribeDao">
 
     <select id="findAll"
-        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe"> </select>
+        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe"> SELECT * FROM subscribe </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="subscribeId"> </insert>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="subscribeId"> INSERT INTO
+        subscribe(post_id, user_id) VALUES(#{postId}, #{userId}) </insert>
 
     <select id="findById"
-        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe"> </select>
+        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe">
+         SELECT * FROM subscribe WHERE subscribe_id=#{subscribeId} </select>
 
 
-    <delete id="deleteById"></delete>
+    <delete id="deleteById">DELETE FROM subscribe WHERE subscribe_id=#{subscribeId}</delete>
 </mapper>
 
 
