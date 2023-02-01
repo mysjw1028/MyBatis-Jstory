@@ -10,7 +10,7 @@ img는 사진업로드 테스트 코드!!
 USE blogdb;
 
 
-create table user(
+create table user(--유저(사용자)--
      user_id int primary KEY auto_increment,
      username VARCHAR(20) NOT NULL UNIQUE,
 	 password varchar(20) NOT NULL,
@@ -26,7 +26,7 @@ create table category(
      created_at TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
 
-create table post(
+create table post(--포스팅--
 	 post_id INT primary KEY auto_increment,
 	 post_title varchar(20) NOT null,
      post_content longtext NOT null,
@@ -37,7 +37,7 @@ create table post(
      created_at TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
 
- create table love(
+create table love(--좋아요--
 	 love_id INT primary KEY auto_increment,
 	 post_id INT NOT null,
 	 user_id INT NOT null,
@@ -45,15 +45,24 @@ create table post(
      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
      UNIQUE uk_loves (user_id,post_id)
 );
-create table comment(
-		comment_id int primary KEY,
-		user_id int NOT NULL,
-		post_id INT NOT NULL,
-		comment_content longtext NOT null,
-		updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-	);
+create table subscribe(--구독--
+	 subscribe_id INT primary KEY auto_increment,
+	 post_id INT NOT null,
+	 user_id INT NOT null,
+     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     UNIQUE uk_subscribe (user_id,post_id)
+);
+
+create table comment(--댓글--
+	 comment_id int primary KEY,
+	 user_id int NOT NULL,
+	 post_id INT NOT NULL,
+	 comment_content longtext NOT null,
+	 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 	
+
 --테스트 코드--
 create table img( 
 	 id INT primary KEY AUTO_INCREMENT,
