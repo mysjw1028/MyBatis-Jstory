@@ -2,6 +2,8 @@ package site.metacoding.firstapp.domain.subscribe;
 
 import java.util.List;
 
+import site.metacoding.firstapp.web.dto.subscribe.SubscribeDto;
+
 public interface SubscribeDao {
     public void insert(Subscribe subscribe);
 
@@ -9,7 +11,7 @@ public interface SubscribeDao {
 
     public void findByDetail(Subscribe subscribe);
 
-    public void findById(Integer subscribeId);
+    public SubscribeDto findById(Integer subscribeId);
 
     public void update(Subscribe subscribe);
 

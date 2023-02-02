@@ -137,7 +137,7 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
 
 <script>
     // 하트 아이콘을 클릭했을때의 로직
-    $(" #iconLove").click(() => {
+    $("#iconLove").click(() => {
         let isLovedState = $("#iconLove").hasClass("fa-solid");
         if (isLovedState) {
             deleteLove();

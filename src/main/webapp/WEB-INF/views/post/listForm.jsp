@@ -13,6 +13,7 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <input id="asd" type="text" value="${principal.userId}" />
         <input id="subscribeId" type="text" value="${postList[0].subscribeId}" />
         <input id="opponentId" type="text" value="${postList[0].userId}" />
+        <input id="subscribDto" type="text" value="${subscribeDto.subscribeId}" />
 
 
         <!-- 검색바 -->
@@ -31,7 +32,9 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
             </div>
         </div>
 
-
+        <div style="background: #999090; width: 200px; height: 150px;">
+            ${subscribDto.subscribeId}
+        </div>
 
         <!--포스팅하러가기-->
         <button id="postingCheckBox" class="postingCheckBox" type="button">
@@ -40,8 +43,8 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
 
         <!-- 구독  마무리 작업해야함!!-->
         <c:if test="${principal.userId != user.userId}">
-            <button id="subscribeBtn" class="btn btn-outline-primary" type="button">
-                ${subscribeId !=null ? '구독중': '구독'}
+            <button id="subscribeBtn" class="btn btn-outline-primary" type="button" value="${postList[0].subscribeId}">
+                ${postList[0].subscribeId !=null ? '구독중': '구독'}
             </button>
         </c:if>
 
@@ -102,14 +105,20 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
 
         <script>
             //구독버튼을  클릭했을때의 로직
+            let subscribetest = subscribeId;
+            if ($(subscribeId).val == "") { subscribetest == false } else subscribetest == true;
+
             $("#subscribeBtn").click(() => {
                 console.log("구독버튼 실행됨");
                 let isSubscribeState = $("#subscribeId").val();
+
                 if (isSubscribeState == "") {
                     insertSubscribe();
+                    subscribetest = true;
                     console.log("위에꺼 실행됨");
                 } else {
                     deleteSubscribe();
+                    subscribetest == false;
                     console.log("아래꺼 실행됨");
                 }
             });
@@ -144,10 +153,19 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
                     if (res.code == 1) {
                         alert("구독 취소에 성공했습니다");
                         isSubscribeState = $("subscribeId").val('');
+                        reflash(subscribeId);
+                        console.log(isSubscribeState);
                     } else {
                         alert("구독 취소에 실패했습니다");
                     }
                 });
+
+                function reflash(subscribeId) {
+                    location.reload();
+                    $("#subscribeId").val(subscribeId);
+                }
+
+
             }
 
         </script>
