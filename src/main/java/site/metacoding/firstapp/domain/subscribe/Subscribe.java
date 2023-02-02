@@ -12,11 +12,11 @@ import lombok.Setter;
 public class Subscribe {
     private Integer subscribeId;
     private Integer userId;
-    private Integer postId;
+    private Integer opponentId;
     private Timestamp createdAt;
 
-    public Subscribe(Integer userId, Integer postId) {
+    public Subscribe(Integer userId, Integer opponentId) {
         this.userId = userId;
-        this.postId = postId;
+        this.opponentId = opponentId;
     }
 }

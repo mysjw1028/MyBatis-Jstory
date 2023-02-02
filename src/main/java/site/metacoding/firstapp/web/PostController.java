@@ -18,6 +18,7 @@ import site.metacoding.firstapp.domain.img.ImgDto;
 import site.metacoding.firstapp.domain.love.Love;
 import site.metacoding.firstapp.domain.post.Post;
 import site.metacoding.firstapp.domain.post.PostDao;
+import site.metacoding.firstapp.domain.subscribe.Subscribe;
 import site.metacoding.firstapp.domain.user.User;
 import site.metacoding.firstapp.domain.user.UserDao;
 import site.metacoding.firstapp.service.PostService;
@@ -158,6 +159,27 @@ public class PostController {
         postService.좋아요취소(loveId);
         // System.out.println("디버그!!!!!! : " + loveId);
         return new CMRespDto<>(1, "좋아요 취소 성공", null);
+    }
+
+    // 구독하기 부분
+    @PostMapping("/post/listForm/{userId}/subscribe")
+    public @ResponseBody CMRespDto<?> insertSubscribe(@PathVariable Integer userId) {
+        User principal = (User) session.getAttribute("principal");
+        Subscribe subscribe = new Subscribe(principal.getUserId(), userId);
+        postService.구독하기(subscribe);// 이제 프라이머리 키가있어서 응답
+        System.out.println("구독 디버그!!!!!! 구독: " + subscribe.getSubscribeId());
+        System.out.println("구독 디버그!!!!!! 유저: " + subscribe.getUserId());
+        System.out.println("구독 디버그!!!!!! 포스팅: " + subscribe.getOpponentId());
+        return new CMRespDto<>(1, "구독하기 성공", (subscribe));
+    }
+
+    // 인증필요 ->세션에 값이 있는지 이사람의 정보가 있는지-> principal 활용
+    @DeleteMapping("/post/listForm/{userId}/subscribe/{subscribeId}") // 충돌나서 lovesId
+    public @ResponseBody CMRespDto<?> deleteSubscribe(@PathVariable Integer userId,
+            @PathVariable Integer subscribeId) {
+        postService.구독취소(subscribeId);
+        System.out.println("구독 디버그!!!!!! : " + subscribeId);
+        return new CMRespDto<>(1, "구독취소 성공", null);
     }
 
 }

@@ -11,6 +11,7 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
 
 
         <input id="userId" type="hidden" value="${user.userId}" />
+        <input id="subscribeId" type="hidden" value="${subscribe.subscribeId}" />
 
 
         <!-- 검색바 -->
@@ -35,14 +36,16 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <button id="postingCheckBox" class="postingCheckBox" type="button">
             <a href="/post/writeForm/${principal.userId}">포스팅하러 하기</a>
         </button>
+
         <!-- 구독  마무리 작업해야함!!-->
-        <c:if test="${ principal.userId !=user.userId}">
-            <button id="subscribeBtn" class="postingCheckBox" class="${subscribeId !=null ?'blackBtn' : 'greyBtn'}"
-                type="button">
+        <c:if test="${principal.userId != user.userId}">
+            <button id="subscribeBtn" class="btn btn-outline-primary" type="button">
                 ${subscribeId !=null ? '구독중': '구독'}
             </button>
         </c:if>
+
     </div>
+
 
 
 
@@ -92,6 +95,55 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
                         href="?page=${paging.currentPage+1}&keyword=${paging.keyword}">Next</a></li>
             </ul>
         </div>
+
+
+
+
+        <script>
+            //구독버튼을  클릭했을때의 로직
+            $("#subscribeBtn").click(() => {
+                let isSubscribeState = $("#subscribeBtn");
+                if (isSubscribeState) {
+                    deleteSubscribe(isSubscribeState);
+                } else {
+                    insertSubscribe(isSubscribeState);
+                }
+            });
+
+            // DB에 insert 요청하기
+            function insertSubscribe() {
+                let postId = $("#postId").val();
+
+                $.ajax("/post/listForm/" + userId + "/subscribe", {
+                    type: "POST",
+                    dataType: "json"
+                }).done((res) => {
+                    if (res.code == 1) {
+                        $("#subscribeId").val(res.data.postId);
+                        alert("구독에 성공했습니다");
+                    } else {
+                        alert("구독 실패했습니다");
+                    }
+                });
+            }
+
+            // DB에 delete 요청하기
+            function deleteSubscribe() {//delete는 바디 데이터가 없다
+                let postId = $("#postId").val();
+                let subscribeId = $("#subscribeId").val();
+
+                $.ajax("/post/listForm/" + userId + "/subscribe/" + subscribeId, {
+                    type: "DELETE",
+                    dataType: "json"
+                }).done((res) => {//res를 자바스크립트로 바꿔치기한다-> 통신이 끝나면
+                    if (res.code == 1) {//빈 하트로 바꾸기- > 바꾸는 그림그리느거야
+                        alert("구독 취소에 성공했습니다");
+                    } else {
+                        alert("구독 취소에 실패했습니다");
+                    }
+                });
+            }
+        </script>
 
 
 
