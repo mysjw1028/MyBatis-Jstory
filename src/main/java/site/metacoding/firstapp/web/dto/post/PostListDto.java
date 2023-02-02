@@ -21,7 +21,7 @@ public class PostListDto {
     private Timestamp createdAt;
 
     // db에 없는값
-
+    private Integer subscribeId;
     private String categoryTitle;
     private String keyword;
 

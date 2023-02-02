@@ -42,4 +42,6 @@ public interface PostDao {
 
         public PostDatailDto findByDetail(@Param("postId") Integer postId, @Param("userId") Integer userId);
 
+        public PostDatailDto findByDetailSubscribe(@Param("subscribeId") Integer subscribeId,
+                        @Param("userId") Integer userId);
 }

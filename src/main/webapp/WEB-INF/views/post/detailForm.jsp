@@ -10,8 +10,8 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
             <input id="commentId" type="hidden" value="${commentId.userId}" />
 
             <input id="categoryId" type="hidden" value="${category.categoryId}" />
-            <input id="loveId" type="hidden" value="${love.loveId}" name="loveId" />
-            <input id="loveuserId" type="hidden" value="${love.userId}" />
+            <input id="loveId" type="text" value="${love.loveId}" name="loveId" />
+            <input id="loveuserId" type="text" value="${love.userId}" />
 
 
             <div class="my_post_detail_title">
@@ -140,9 +140,9 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
     $(" #iconLove").click(() => {
         let isLovedState = $("#iconLove").hasClass("fa-solid");
         if (isLovedState) {
-            deleteLove(isLovedState);
+            deleteLove();
         } else {
-            insertLove(isLovedState);
+            insertLove();
         }
     });
 

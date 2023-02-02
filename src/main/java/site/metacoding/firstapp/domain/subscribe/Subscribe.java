@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 public class Subscribe {
     private Integer subscribeId;
-    private Integer userId;
-    private Integer opponentId;
+    private Integer userId; // 자기
+    private Integer opponentId; // 상대방
     private Timestamp createdAt;
 
     public Subscribe(Integer userId, Integer opponentId) {

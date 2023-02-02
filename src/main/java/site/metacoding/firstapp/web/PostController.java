@@ -42,7 +42,10 @@ public class PostController {
 
     // 1번째 ?page=0&keyword=스프링 -> 프라이머리키가 아니라서 @PathVariable를 걸음
     @GetMapping("/post/listForm/{userId}")
-    public String 내블로그(Model model, Integer page, @PathVariable Integer userId, String keyword) { // 0 -> 0, 1->10,
+    public String 내블로그(Model model, Integer page, @PathVariable Integer userId, String keyword, Integer subscribeId) { // 0
+        // ->
+        // 0,
+        // 1->10,
         // 2->20
         if (page == null)
             page = 0;
@@ -162,10 +165,9 @@ public class PostController {
     }
 
     // 구독하기 부분
-    @PostMapping("/post/listForm/{userId}/subscribe")
-    public @ResponseBody CMRespDto<?> insertSubscribe(@PathVariable Integer userId) {
-        User principal = (User) session.getAttribute("principal");
-        Subscribe subscribe = new Subscribe(principal.getUserId(), userId);
+    @PostMapping("/post/listForm/{userId}/subscribe/{opponentId}")
+    public @ResponseBody CMRespDto<?> insertSubscribe(@PathVariable Integer userId, @PathVariable Integer opponentId) {
+        Subscribe subscribe = new Subscribe(userId, opponentId);
         postService.구독하기(subscribe);// 이제 프라이머리 키가있어서 응답
         System.out.println("구독 디버그!!!!!! 구독: " + subscribe.getSubscribeId());
         System.out.println("구독 디버그!!!!!! 유저: " + subscribe.getUserId());
@@ -174,11 +176,11 @@ public class PostController {
     }
 
     // 인증필요 ->세션에 값이 있는지 이사람의 정보가 있는지-> principal 활용
-    @DeleteMapping("/post/listForm/{userId}/subscribe/{subscribeId}") // 충돌나서 lovesId
+    @DeleteMapping("/post/listForm/{userId}/subscribe/{subscribeId}")
     public @ResponseBody CMRespDto<?> deleteSubscribe(@PathVariable Integer userId,
             @PathVariable Integer subscribeId) {
         postService.구독취소(subscribeId);
-        System.out.println("구독 디버그!!!!!! : " + subscribeId);
+        System.out.println("구독 디버그!!!!!! 삭제 : " + subscribeId);
         return new CMRespDto<>(1, "구독취소 성공", null);
     }
 
