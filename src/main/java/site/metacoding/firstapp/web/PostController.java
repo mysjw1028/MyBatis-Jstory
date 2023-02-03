@@ -39,7 +39,6 @@ public class PostController {
     private final HttpSession session;
     private final PostDao postDao;
     private final UserDao userDao;
-    private final SubscribeDao subscribeDao;
     private final CommentDao commentDao;
     private final PostService postService;
 
@@ -56,30 +55,22 @@ public class PostController {
 
         if (keyword == null || keyword.isEmpty()) {
             List<PostListDto> postList = postDao.findAll(startNum, userId);
-            SubscribeDto subscribeDto = subscribeDao.findById(subscribeId);
             PostPagingDto paging = postDao.paging(page, userId, null);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
 
             model.addAttribute("postList", postList);
             model.addAttribute("paging", paging);
-            model.addAttribute("subscribeDto", subscribeId);
-
-            System.out.println("subscribeDto" + subscribeDto.getSubscribeId());
-            System.out.println("subscribeDto" + subscribeDto.getOpponentId());
-            System.out.println("subscribeDto" + subscribeDto.getUserId());
 
             return "post/listForm";
 
         } else {
             // null이 아닐경우 //값에 안담김
             List<PostListDto> postList = postDao.findSearch(userId, keyword, startNum);
-            SubscribeDto subscribeDto = subscribeDao.findById(subscribeId);
             PostPagingDto paging = postDao.paging(page, userId, keyword);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
 
             model.addAttribute("postList", postList);
             model.addAttribute("paging", paging);
-            model.addAttribute("subscribeDto", subscribeId);
 
         }
 

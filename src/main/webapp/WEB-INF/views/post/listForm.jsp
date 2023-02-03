@@ -13,8 +13,9 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <input id="asd" type="text" value="${principal.userId}" />
         <input id="subscribeId" type="text" value="${postList[0].subscribeId}" />
         <input id="opponentId" type="text" value="${postList[0].userId}" />
-        <input id="subscribDto" type="text" value="${subscribeDto.subscribeId}" />
-
+        <div style="width: 100px; height: 100px; background-color: aqua;">
+            ${postList[0].subscribeId}
+        </div>
 
         <!-- 검색바 -->
         <div class="form-group row justify-content-left" style="padding-left: 15px">
@@ -32,9 +33,7 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
             </div>
         </div>
 
-        <div style="background: #999090; width: 200px; height: 150px;">
-            ${subscribDto.subscribeId}
-        </div>
+
 
         <!--포스팅하러가기-->
         <button id="postingCheckBox" class="postingCheckBox" type="button">

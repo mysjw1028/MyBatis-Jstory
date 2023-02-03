@@ -9,4 +9,5 @@ public class SubscribeDto {
     private Integer subscribeId;
     private Integer userId;
     private Integer opponentId;
+
 }
