@@ -15,7 +15,8 @@ import site.metacoding.firstapp.web.dto.post.PostUpdateRespDto;
 public interface PostDao {
         public void insert(ImgDto imgDto);
 
-        public List<PostListDto> findAll(@Param("startNum") int startNum, @Param("userId") Integer userId);
+        public List<PostListDto> findAll(@Param("startNum") int startNum, @Param("userId") Integer userId,
+                        @Param("suUserId") Integer suUserId);
 
         public List<Post> findSearchMain(
                         String keyword);
@@ -24,7 +25,8 @@ public interface PostDao {
                         @Param("keyword") String keyword);
 
         public List<PostListDto> findSearch(@Param("userId") Integer userId,
-                        @Param("keyword") String keyword, @Param("startNum") int startNum);
+                        @Param("keyword") String keyword, @Param("startNum") int startNum,
+                        @Param("suUserId") Integer suUserId);
 
         public List<Category> findAllcategory(Integer userId);
 
@@ -42,6 +44,8 @@ public interface PostDao {
 
         public PostDatailDto findByDetail(@Param("postId") Integer postId, @Param("userId") Integer userId);
 
-        public PostDatailDto findByDetailSubscribe(@Param("subscribeId") Integer subscribeId,
-                        @Param("userId") Integer userId);
+        public List<PostListDto> findByDetailSubscribe(
+                        @Param("opponentId") Integer opponentId,
+                        @Param("suUserId") Integer suUserId);
+
 }

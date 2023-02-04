@@ -22,6 +22,9 @@ public class PostListDto {
 
     // db에 없는값
     private Integer subscribeId;
+    private Integer opponentId;
+    private Integer suUserId;
+
     private String categoryTitle;
     private String keyword;
 

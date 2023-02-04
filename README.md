@@ -47,10 +47,11 @@ create table love(--좋아요--
 );
 create table subscribe(--구독--
 	 subscribe_id INT primary KEY auto_increment,
-	 user_id INT NOT NULL,
-	 opponent_id INT NOT NULL,
+	 user_id INT NOT NULL, -- 구독하는 유저 -- 
+	 opponent_id INT NOT NULL,-- 구독당하는 유저 --  
      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
      );
+
 create table comment(--댓글--
 	 comment_id int primary KEY,
 	 user_id int NOT NULL,
