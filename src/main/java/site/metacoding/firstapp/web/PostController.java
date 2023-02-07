@@ -189,4 +189,11 @@ public class PostController {
         return new CMRespDto<>(1, "구독취소 성공", null);
     }
 
+    // @GetMapping("/subscribe/listForm/{userId}/{subscribeId}")
+    @GetMapping("/subscribe")
+    public String 구독목록() {
+
+        return "subscribe/listForm";
+    }
+
 }
