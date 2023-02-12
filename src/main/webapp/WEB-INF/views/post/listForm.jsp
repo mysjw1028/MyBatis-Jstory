@@ -10,12 +10,10 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         </div>
 
 
-        <input id="asd" type="text" value="${principal.userId}" />
-        <input id="subscribeId" type="text" value="${postList[0].subscribeId}" />
-        <input id="opponentId" type="text" value="${postList[0].userId}" />
-        <div style="width: 100px; height: 100px; background-color: aqua;">
-            ${postList[0].subscribeId}
-        </div>
+        <input id="asd" type="hidden" value="${principal.userId}" />
+        <input id="subscribeId" type="hidden" value="${postList[0].subscribeId}" />
+        <input id="opponentId" type="hidden" value="${postList[0].userId}" />
+
 
         <!-- 검색바 -->
         <div class="form-group row justify-content-left" style="padding-left: 15px">
@@ -40,9 +38,9 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
             <a href="/post/writeForm/${principal.userId}">포스팅하러 하기</a>
         </button>
 
-        <!-- 구독  마무리 작업해야함!!-->
+        <!-- 구독  버튼 이름 제대로 변경되지 않음!-->
         <c:if test="${principal.userId != user.userId}">
-            <button id="subscribeBtn" class="btn btn-outline-primary" type="button" value="${postList[0].subscribeId}">
+            <button id="subscribeBtn" class="btn btn-outline-primary" value="${postList[0].subscribeId}">
                 ${postList[0].subscribeId !=null ? '구독중': '구독'}
             </button>
         </c:if>

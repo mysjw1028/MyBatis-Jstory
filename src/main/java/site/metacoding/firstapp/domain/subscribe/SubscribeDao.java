@@ -2,8 +2,6 @@ package site.metacoding.firstapp.domain.subscribe;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import site.metacoding.firstapp.web.dto.subscribe.SubscribeDto;
 
 public interface SubscribeDao {
