@@ -41,7 +41,7 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <!-- 구독  버튼 이름 제대로 변경되지 않음!-->
         <c:if test="${principal.userId != user.userId}">
             <button id="subscribeBtn" class="btn btn-outline-primary" value="${postList[0].subscribeId}">
-                ${postList[0].subscribeId !=null ? '구독중': '구독'}
+                ${postList[0].subscribeId !=null ? '구독중 ': '구독하기'}
             </button>
         </c:if>
 

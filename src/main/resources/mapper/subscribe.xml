@@ -15,6 +15,7 @@
 
     <delete id="deleteById">DELETE FROM subscribe WHERE subscribe_id=#{subscribeId}</delete>
 
+
 </mapper>
 
 

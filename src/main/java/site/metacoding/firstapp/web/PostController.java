@@ -190,10 +190,11 @@ public class PostController {
     }
 
     // @GetMapping("/subscribe/listForm/{userId}/{subscribeId}")
-    @GetMapping("/subscribe")
-    public String 구독목록() {
-
+    @GetMapping("/subscribe/listForm/{userId}/{subscribeId}")
+    public String 구독목록(@PathVariable Integer subscribeId, @PathVariable Integer userId, Model model) {
+        model.addAttribute("subscribe", SubscribeDto.findById(subscribeId, userId));
         return "subscribe/listForm";
     }
 
 }
+// 까먹고 데이터 테스트 못함 미래의 내가 하겟지..?

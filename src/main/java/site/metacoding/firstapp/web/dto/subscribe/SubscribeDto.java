@@ -9,4 +9,7 @@ public class SubscribeDto {
     private Integer subscribeId;
     private Integer userId;
     private Integer opponentId;
+    public static Object findById(Integer subscribeId2, Integer userId2) {
+        return null;
+    }
 }
