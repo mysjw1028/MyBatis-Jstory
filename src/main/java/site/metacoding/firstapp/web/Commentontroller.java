@@ -13,12 +13,13 @@ import site.metacoding.firstapp.web.dto.comment.CommentRespUpdateDto;
 
 @RequiredArgsConstructor
 @Controller
-public class ReplyController {
+public class Commentontroller {
     private final CommentDao commentDao;
 
     @PostMapping("/post/comment/write/{postId}/{userId}")
     public String replylnsert(Comment comment, @PathVariable Integer postId, @PathVariable Integer userId) {
         commentDao.insert(comment);
+        System.out.println("디버그   : " + comment.getCommentContent());
         return "redirect:/";
     }
 
@@ -28,7 +29,7 @@ public class ReplyController {
         Comment commentPS = commentDao.findById(commentId);
         System.out.println(" 디버그 reply업뎃 : " + commentPS.getCommentContent());
         model.addAttribute("comment", commentPS);
-        return "post/replyupdate";
+        return "post/commentupdate";
     }
 
     @PostMapping("/post/comment/update/{commentId}/{userId}")
@@ -41,8 +42,9 @@ public class ReplyController {
         return "redirect:/";
     }
 
-    @PostMapping("/post/comment/delete/{commentId}/{userId}") // 5번 deleteById -> 삭제하기 -> post로 값 삭제
+    @PostMapping("/post/comment/delete/{commentId}/{userId}")
     public String deletecomment(@PathVariable Integer commentId) {
+        System.out.println("이거 타냐??");
         Comment commentPS = commentDao.findById(commentId);
         commentDao.deleteById(commentId);
         return "redirect:/";

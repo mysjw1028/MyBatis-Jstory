@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.metacoding.firstapp.domain.subscribe.SubscribeDao">
+
+    <select id="findAll"
+        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe"> SELECT * FROM subscribe </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="subscribeId"> INSERT INTO subscribe
+        (su_user_id,opponent_id) VALUES(#{userId},#{opponentId}) </insert>
+
+    <select id="findById"
+        resultType="site.metacoding.firstapp.domain.subscribe.Subscribe">SELECT * FROM subscribe
+        WHERE subscribe_id=#{subscribeId} and su_user_id = #{userId}</select>
+
+
+    <delete id="deleteById">DELETE FROM subscribe WHERE subscribe_id=#{subscribeId}</delete>
+
+
+</mapper>
+
+
+
+ 

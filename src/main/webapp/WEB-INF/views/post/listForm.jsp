@@ -10,7 +10,9 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         </div>
 
 
-        <input id="userId" type="hidden" value="${user.userId}" />
+        <input id="asd" type="hidden" value="${principal.userId}" />
+        <input id="subscribeId" type="hidden" value="${postList[0].subscribeId}" />
+        <input id="opponentId" type="hidden" value="${postList[0].userId}" />
 
 
         <!-- 검색바 -->
@@ -35,14 +37,16 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
         <button id="postingCheckBox" class="postingCheckBox" type="button">
             <a href="/post/writeForm/${principal.userId}">포스팅하러 하기</a>
         </button>
-        <!-- 구독  마무리 작업해야함!!-->
-        <c:if test="${ principal.userId !=user.userId}">
-            <button id="subscribeBtn" class="postingCheckBox" class="${subscribeId !=null ?'blackBtn' : 'greyBtn'}"
-                type="button">
-                ${subscribeId !=null ? '구독중': '구독'}
+
+        <!-- 구독  버튼 이름 제대로 변경되지 않음!-->
+        <c:if test="${principal.userId != user.userId}">
+            <button id="subscribeBtn" class="btn btn-outline-primary" value="${postList[0].subscribeId}">
+                ${postList[0].subscribeId !=null ? '구독중 ': '구독하기'}
             </button>
         </c:if>
+
     </div>
+
 
 
 
@@ -92,6 +96,76 @@ pageEncoding="UTF-8"%> <%@ include file="../layout/post-header.jsp"%>
                         href="?page=${paging.currentPage+1}&keyword=${paging.keyword}">Next</a></li>
             </ul>
         </div>
+
+
+
+
+        <script>
+            //구독버튼을  클릭했을때의 로직
+            let subscribetest = subscribeId;
+            if ($(subscribeId).val == "") { subscribetest == false } else subscribetest == true;
+
+            $("#subscribeBtn").click(() => {
+                console.log("구독버튼 실행됨");
+                let isSubscribeState = $("#subscribeId").val();
+
+                if (isSubscribeState == "") {
+                    insertSubscribe();
+                    subscribetest = true;
+                    console.log("위에꺼 실행됨");
+                } else {
+                    deleteSubscribe();
+                    subscribetest == false;
+                    console.log("아래꺼 실행됨");
+                }
+            });
+
+            // DB에 insert 요청하기
+            function insertSubscribe() {
+                let opponentId = $("#opponentId").val();
+                let userId = $("#asd").val();
+
+                $.ajax("/post/listForm/" + userId + "/subscribe/" + opponentId, {
+                    type: "POST",
+                    dataType: "json"
+                }).done((res) => {
+                    if (res.code == 1) {
+                        $("#subscribeId").val(res.data.subscribeId);
+                        alert("구독에 성공했습니다");
+                    } else {
+                        alert("구독 실패했습니다");
+                    }
+                });
+            }
+
+            // DB에 delete 요청하기
+            function deleteSubscribe() {//delete는 바디 데이터가 없다
+                let subscribeId = $("#subscribeId").val();
+                let userId = $("#asd").val();
+
+                $.ajax("/post/listForm/" + userId + "/subscribe/" + subscribeId, {
+                    type: "DELETE",
+                    dataType: "json"
+                }).done((res) => {
+                    if (res.code == 1) {
+                        alert("구독 취소에 성공했습니다");
+                        isSubscribeState = $("subscribeId").val('');
+                        reflash(subscribeId);
+                        console.log(isSubscribeState);
+                    } else {
+                        alert("구독 취소에 실패했습니다");
+                    }
+                });
+
+                function reflash(subscribeId) {
+                    location.reload();
+                    $("#subscribeId").val(subscribeId);
+                }
+
+
+            }
+
+        </script>
 
 
 

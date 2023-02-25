@@ -18,7 +18,6 @@ public class MainController {
 
     @GetMapping({ "/", "/mainForm" }) // 화면 출력되는지 확인 완료
     public String 메인페이지(Model model, String keyword) {
-        System.out.println("디버그 : keyword : " + keyword);
 
         if (keyword == null || keyword.isEmpty()) {
             List<Post> postListsearch = postDao.findSearchMain(null);
@@ -29,7 +28,6 @@ public class MainController {
             model.addAttribute("postThumnail", postListsearch);
             return "mainForm";
         } else {
-            System.out.println("디버그 : keyword : " + keyword);
             List<Post> postListsearch = postDao.findSearchMain(keyword);
 
             model.addAttribute("post", postListsearch);

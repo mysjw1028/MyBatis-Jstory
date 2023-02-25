@@ -18,6 +18,8 @@ import site.metacoding.firstapp.domain.img.ImgDto;
 import site.metacoding.firstapp.domain.love.Love;
 import site.metacoding.firstapp.domain.post.Post;
 import site.metacoding.firstapp.domain.post.PostDao;
+import site.metacoding.firstapp.domain.subscribe.Subscribe;
+import site.metacoding.firstapp.domain.subscribe.SubscribeDao;
 import site.metacoding.firstapp.domain.user.User;
 import site.metacoding.firstapp.domain.user.UserDao;
 import site.metacoding.firstapp.service.PostService;
@@ -28,6 +30,7 @@ import site.metacoding.firstapp.web.dto.post.PostListDto;
 import site.metacoding.firstapp.web.dto.post.PostPagingDto;
 import site.metacoding.firstapp.web.dto.post.PostReadDto;
 import site.metacoding.firstapp.web.dto.post.PostUpdateRespDto;
+import site.metacoding.firstapp.web.dto.subscribe.SubscribeDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,27 +44,31 @@ public class PostController {
 
     // 1번째 ?page=0&keyword=스프링 -> 프라이머리키가 아니라서 @PathVariable를 걸음
     @GetMapping("/post/listForm/{userId}")
-    public String 내블로그(Model model, Integer page, @PathVariable Integer userId, String keyword) { // 0 -> 0, 1->10,
+    public String 내블로그(Model model, Integer page, @PathVariable Integer userId, String keyword, Integer suUserId) { // 0
+        // ->
+        // 0,
+        // 1->10,
         // 2->20
+
         if (page == null)
             page = 0;
         int startNum = page * 3; // 1. 수정함 -> 3개씩 보임
 
         if (keyword == null || keyword.isEmpty()) {
-            List<PostListDto> postList = postDao.findAll(startNum, userId);
-
+            List<PostListDto> postList = postDao.findAll(startNum, userId, suUserId);
+            List<PostListDto> subscribeId = postDao.findByDetailSubscribe(userId, suUserId);
             PostPagingDto paging = postDao.paging(page, userId, null);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
 
             model.addAttribute("postList", postList);
+            model.addAttribute("subscribeId", subscribeId);
             model.addAttribute("paging", paging);
 
             return "post/listForm";
 
         } else {
             // null이 아닐경우 //값에 안담김
-
-            List<PostListDto> postList = postDao.findSearch(userId, keyword, startNum);
+            List<PostListDto> postList = postDao.findSearch(userId, keyword, startNum, suUserId);
             PostPagingDto paging = postDao.paging(page, userId, keyword);// 페이지 호출
             paging.makeBlockInfo(keyword, userId);
 
@@ -94,7 +101,6 @@ public class PostController {
         PostDatailDto postDatailDtos = postDao.detailOnly(postId);// 얘를 올려서
         List<CommentReadDto> commentList = commentDao.commentOnly(userId, postId);
 
-        System.out.println("디버그~~~!" + postDatailDtos.getCategoryTitle());
         model.addAttribute("user", userDao.findById(userId));
 
         model.addAttribute("PostDatailDto", postService.게시글상세보기(postId, userId));
@@ -162,4 +168,33 @@ public class PostController {
         return new CMRespDto<>(1, "좋아요 취소 성공", null);
     }
 
+    // 구독하기 부분
+    @PostMapping("/post/listForm/{userId}/subscribe/{opponentId}")
+    public @ResponseBody CMRespDto<?> insertSubscribe(@PathVariable Integer userId,
+            @PathVariable Integer opponentId) {
+        Subscribe subscribe = new Subscribe(userId, opponentId);
+        postService.구독하기(subscribe);// 이제 프라이머리 키가있어서 응답
+        System.out.println("구독 디버그!!!!!! 구독: " + subscribe.getSubscribeId());
+        System.out.println("구독 디버그!!!!!! 유저: " + subscribe.getUserId());
+        System.out.println("구독 디버그!!!!!! 포스팅: " + subscribe.getOpponentId());
+        return new CMRespDto<>(1, "구독하기 성공", (subscribe));
+    }
+
+    // 인증필요 ->세션에 값이 있는지 이사람의 정보가 있는지-> principal 활용
+    @DeleteMapping("/post/listForm/{userId}/subscribe/{subscribeId}")
+    public @ResponseBody CMRespDto<?> deleteSubscribe(@PathVariable Integer userId,
+            @PathVariable Integer subscribeId) {
+        postService.구독취소(subscribeId);
+        System.out.println("구독 디버그!!!!!! 삭제 : " + subscribeId);
+        return new CMRespDto<>(1, "구독취소 성공", null);
+    }
+
+    // @GetMapping("/subscribe/listForm/{userId}/{subscribeId}")
+    @GetMapping("/subscribe/listForm/{userId}/{subscribeId}")
+    public String 구독목록(@PathVariable Integer subscribeId, @PathVariable Integer userId, Model model) {
+        model.addAttribute("subscribe", SubscribeDto.findById(subscribeId, userId));
+        return "subscribe/listForm";
+    }
+
 }
+// 까먹고 데이터 테스트 못함 미래의 내가 하겟지..?
