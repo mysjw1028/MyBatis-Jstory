@@ -194,5 +194,5 @@ public class PostController {
         model.addAttribute("subscribe", SubscribeDto.findById(subscribeId, userId));
         return "subscribe/listForm";
     }
-
+ 
 }
