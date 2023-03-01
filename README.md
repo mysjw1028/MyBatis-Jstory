@@ -102,3 +102,18 @@ VALUES('3번 타이틀 더미 데이터',1,NOW());
 </br>
 </br>
 ## 6. 결과
+![메인](https://user-images.githubusercontent.com/108706248/222045274-5ca0bdc9-aca5-49e5-a63a-681965df1957.png)
+![로그인](https://user-images.githubusercontent.com/108706248/222045286-92369390-b724-41d5-89be-03bc93d66bae.png)
+![구독목록](https://user-images.githubusercontent.com/108706248/222045292-58437ee0-55e0-4166-8031-53f99853ec93.png)
+![내블로그](https://user-images.githubusercontent.com/108706248/222045296-f8c58a5f-3ec6-4f0e-b6bb-e1646cde5bd7.png)
+![계정관리 비밀번호 확인](https://user-images.githubusercontent.com/108706248/222045299-8e75ab17-afe8-4b46-8695-bb14c170960a.png)
+![정보수정](https://user-images.githubusercontent.com/108706248/222045302-f08952fe-0c55-48e4-bab4-e48e31f36c2e.png)
+![카테고리등록](https://user-images.githubusercontent.com/108706248/222045306-22b16ed0-2f4c-40b3-8c76-3f9179718c0e.png)
+![블로그회원가입](https://user-images.githubusercontent.com/108706248/222045307-a85bf116-5149-44d6-af3f-9ecd37adafc6.png)
+![포스팅 작성](https://user-images.githubusercontent.com/108706248/222045309-6a1db310-2ce2-4dbe-96b3-b85c858de121.png)
+![블로그 상세보기 댓글, 좋아요](https://user-images.githubusercontent.com/108706248/222045312-2f1fa160-e1c1-48d1-ac1a-2ff45da30d14.png)
+![포스팅 주인이 보는 상세보기](https://user-images.githubusercontent.com/108706248/222045313-0f19ee13-ba18-40d1-b030-067c5fb78fc1.png)
+![내블로그 수정](https://user-images.githubusercontent.com/108706248/222045333-42f9c66f-ac43-450f-aadc-5b09bc299a31.png)
+![블로그 상세보기](https://user-images.githubusercontent.com/108706248/222045346-0f3f0953-79a8-4477-86e8-967742d274be.png)
+![댓글쓴 사람이 수정 삭제](https://user-images.githubusercontent.com/108706248/222045359-e8ff9bcc-9cac-4a6c-8a2b-7bd61e7a0653.png)
+![댓글수정](https://user-images.githubusercontent.com/108706248/222045361-ea121009-aaf3-42a8-b751-a5abc9f2c4fb.png)

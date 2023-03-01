@@ -19,7 +19,6 @@ import site.metacoding.firstapp.domain.love.Love;
 import site.metacoding.firstapp.domain.post.Post;
 import site.metacoding.firstapp.domain.post.PostDao;
 import site.metacoding.firstapp.domain.subscribe.Subscribe;
-import site.metacoding.firstapp.domain.subscribe.SubscribeDao;
 import site.metacoding.firstapp.domain.user.User;
 import site.metacoding.firstapp.domain.user.UserDao;
 import site.metacoding.firstapp.service.PostService;
@@ -197,4 +196,3 @@ public class PostController {
     }
 
 }
-// 까먹고 데이터 테스트 못함 미래의 내가 하겟지..?.
